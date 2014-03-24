@@ -13,7 +13,7 @@ namespace Yam\Controllers\Api\Crud;
 
 use \Input;
 use \Yam\Entities\Repositories\SectionRepository;
-use \Yam\Controllers\Api\AbstractResourceController;
+use \Yam\Controllers\AbstractResourceController;
 
 /**
  * @class SectionController extends AbstractResourceController
@@ -57,7 +57,7 @@ class SectionController extends AbstractResourceController
      */
     public function getResource($id, $options = null)
     {
-        return $this->repository->find($id);
+        return $this->repository->find($id, array_merge(['fields'], array_values((array)$options)));
     }
 
     /**

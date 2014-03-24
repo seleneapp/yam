@@ -37,9 +37,11 @@ class ValidationServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
         $this->app->bindShared('yam.validators', function () {
             return new ValidationRepository(\Validator::getFacadeRoot());
         });
+
     }
 
     /**
@@ -56,6 +58,15 @@ class ValidationServiceProvider extends ServiceProvider
         foreach ((array)$results as $result) {
             $validator->register($result['name'], $result['class'], $result['rules']);
         }
+
+        \Validator::resolver(function($translator, $data, $rules, $messages) {
+
+            $messages = array_merge($messages, [
+                'slug'   => ':slug contains invalid characters',
+                'handle' => ':handle contains invalid characters'
+            ]);
+            return new SlugValidator($translator, $data, $rules, $messages);
+        });
     }
 
     public function provides()

@@ -11,11 +11,11 @@
 
 namespace Yam\Controllers;
 
-use \Yam\Entities\AbstractEntity as Entity;
 use \Yam\Entities\Exception\EntityCreateException;
 use \Yam\Validators\Exception\ValidationException;
 use \Yam\Entities\Exception\EntityNotFoundExcepion;
-use \Illumimate\Routing\Controller as BaseController;
+use \Illuminate\Routing\Controller as BaseController;
+use \Illuminate\Support\Contracts\ArrayableInterface;
 
 /**
  * @abstract class AbstractResourceController extends Illumimate\Routing\Controller
@@ -27,9 +27,8 @@ use \Illumimate\Routing\Controller as BaseController;
  * @author Thomas Appel <mail@thomas-appel.com>
  * @license MIT
  */
-abstract class AbstractResourceController extends Illumimate\Routing\Controller
+abstract class AbstractResourceController extends BaseController
 {
-
     /**
      * getResourceIndex
      *
@@ -99,10 +98,28 @@ abstract class AbstractResourceController extends Illumimate\Routing\Controller
         } catch (EntityNotFoundResponse $e) {
             $response = $this->createResourceNotFoundResponse($e);
         } catch (\Exception $e) {
-            throw $e;
+            $response = $this->createExceptionResponse($e);
         }
 
         return $response;
+    }
+
+    /**
+     * createExceptionResponse
+     *
+     * @param ValidationException $exception
+     *
+     * @access protected
+     * @return mixed
+     */
+    protected function createExceptionResponse(\Exception $exception)
+    {
+        throw $exception;
+        $message = $exception->getMessage();
+        $file    = $exception->getFile();
+        $line    = $exception->getLine();
+
+        return \Response::json(compact('message', 'file', 'line'), 500);
     }
 
     /**
@@ -157,9 +174,9 @@ abstract class AbstractResourceController extends Illumimate\Routing\Controller
      * @access protected
      * @return mixed
      */
-    protected function createResourceCreateResponse(Entity $entity)
+    protected function createResourceCreateResponse(ArrayableInterface $data)
     {
-        return \Response::json($entity, 201);
+        return \Response::json($data, 201);
     }
 
     /**
@@ -170,9 +187,9 @@ abstract class AbstractResourceController extends Illumimate\Routing\Controller
      * @access protected
      * @return mixed
      */
-    protected function createResourceUpdateResponse(Entity $entity)
+    protected function createResourceUpdateResponse(ArrayableInterface $data)
     {
-        return \Response::json($entity, 200);
+        return \Response::json($data, 200);
     }
 
     /**
