@@ -85,10 +85,13 @@ abstract class AbstractResourceController extends BaseController
     abstract public function deleteResource($id);
 
     /**
+     * Catch any exception thrown while executing a controller action and
+     * convert it to an apropriate response:
+     *
      * {@inheritdoc}
      */
-	public function callAction($method, $parameters)
-	{
+    public function callAction($method, $parameters)
+    {
         try {
             $response = parent::callAction($method, $parameters);
         } catch (ValidationException $e) {
@@ -114,7 +117,6 @@ abstract class AbstractResourceController extends BaseController
      */
     protected function createExceptionResponse(\Exception $exception)
     {
-        throw $exception;
         $message = $exception->getMessage();
         $file    = $exception->getFile();
         $line    = $exception->getLine();
@@ -135,7 +137,7 @@ abstract class AbstractResourceController extends BaseController
         $message = $exception->getMessage();
         $errors  = $exception->getErrors();
 
-        return compact('message', 'errors');
+        return \Response::json(compact('message', 'errors'), 500);
     }
 
     /**
@@ -149,6 +151,7 @@ abstract class AbstractResourceController extends BaseController
     protected function createResourceErrorResponse(EntityCreateException $exception)
     {
         $message = $exception->getMessage();
+
         return new \JsonResonse(compact('message'), 500);
     }
 
@@ -163,6 +166,7 @@ abstract class AbstractResourceController extends BaseController
     protected function createResourceNotFoundResponse(EntityCreateException $exception)
     {
         $message = $exception->getMessage();
+
         return \Response::json(compact('message'), 404);
     }
 
