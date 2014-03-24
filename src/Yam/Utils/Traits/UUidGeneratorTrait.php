@@ -11,12 +11,17 @@
 
 namespace Yam\Utils\Traits;
 
+use \Rhumsaa\Uuid\Uuid;
+
 /**
- * @class UUidGeneratorTrait
+ * @trait UuidGeneratorTrait
+ *
  * @package Yam\Utils\Traits
  * @version $Id$
+ * @author Thomas Appel <mail@thomas-appel.com>
+ * @license MIT
  */
-trait UUidGeneratorTrait
+trait UuidGeneratorTrait
 {
     public function createUuid()
     {
