@@ -86,6 +86,7 @@ class SectionController extends AbstractResourceController
     public function updateResource($id)
     {
         $data = Input::all();
+
         return $this->createResourceUpdateResponse($this->repository->update($id, $data));
     }
 
