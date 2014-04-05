@@ -12,9 +12,18 @@
 namespace Yam\Utils\Data;
 
 /**
- * @class List
- * @package Yam\Utils\Data
+ * Inspired by python lists.
+ *
+ * @class ListStruct implements \ArrayAccess, \Countable, \Serializable, \IteratorAggregate
+ * @see \ArrayAccess
+ * @see \Countable
+ * @see \Serializable
+ * @see \IteratorAggregate
+ *
+ * @package Yam\Utils
  * @version $Id$
+ * @author Thomas Appel <mail@thomas-appel.com>
+ * @license MIT
  */
 class ListStruct implements \ArrayAccess, \Countable, \Serializable, \IteratorAggregate
 {
@@ -111,7 +120,11 @@ class ListStruct implements \ArrayAccess, \Countable, \Serializable, \IteratorAg
      */
     public function remove($value)
     {
-        $this->pop(array_search($value, $this->data));
+        if (false === ($index = array_search($value, $this->data, true))) {
+            throw new \InvalidArgumentException('index out of bounds');
+        }
+
+        $this->pop($index);
     }
 
     /**

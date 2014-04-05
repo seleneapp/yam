@@ -49,6 +49,22 @@ class ListStructTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
+    public function popShouldThrowErrorOnInvalidIndex()
+    {
+        $list = new ListStruct(1, 2);
+
+        try {
+            $this->assertEquals(4, $list->remove(3));
+        } catch (\InvalidArgumentException $e) {
+            $this->assertTrue(true);
+            return;
+        }
+        $this->fail();
+    }
+
+    /**
+     * @test
+     */
     public function testInsert()
     {
         $list = new ListStruct(1, 2, 3, 4, 5);
