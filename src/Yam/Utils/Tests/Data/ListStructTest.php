@@ -96,7 +96,7 @@ class ListStructTest extends \PHPUnit_Framework_TestCase
 
         $list->remove('green');
 
-        $this->assertEquals(['red', 'green'], $list->toArray());
+        $this->assertEquals(['red', 'blue'], $list->toArray());
     }
 
     /**
