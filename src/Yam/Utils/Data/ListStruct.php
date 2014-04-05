@@ -19,6 +19,13 @@ namespace Yam\Utils\Data;
 class ListStruct implements \ArrayAccess, \Countable, \Serializable, \IteratorAggregate
 {
     /**
+     * data
+     *
+     * @var array
+     */
+    protected $data;
+
+    /**
      * @param array $data
      *
      * @access public
